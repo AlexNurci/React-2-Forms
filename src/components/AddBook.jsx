@@ -14,19 +14,24 @@ import "./style.css";
  * - isFavorite (boolean, default false)
  */
 
-const AddBook = ({ appendBook, appendAuthor, appendImage }) => {
+const AddBook = ({ appendBook, appendAuthor, appendImage, appendDate, appendDescription}) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [image, setImage] = useState("");
+  const [date, setDate] = useState("");
+  const [description, setDescription] = useState("");
+  const [rating, setRating] = useState("");
   const [titleErrors, setTitleErrors] = useState([]);
   const [dirty, setDirty] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("title", title);
     appendBook(title);
     appendAuthor(author);
     appendImage(image);
+    appendDate(date);
+    appendDescription(description);
+    appendRating(rating);
     clearForm();
   };
 
@@ -49,11 +54,26 @@ const AddBook = ({ appendBook, appendAuthor, appendImage }) => {
     setDirty(true);
     setImage(event.target.value);
   }
+  const handleDateChange = (event) => {
+    setDirty(true);
+    setDate(event.target.value);
+  }
+   const handleDescriptionChange = (event) => {
+    setDirty(true);
+    setDescription(event.target.value);
+  }
+  const handleRatingChange = (event) => {
+    setDirty(true);
+    setRating(event.target.value);
+  }
 
   const clearForm = () => {
     setTitle("");
     setAuthor("");
     setImage("");
+    setDate("");
+    setDescription("");
+    setRating("");
   };
 
   return (
@@ -81,6 +101,30 @@ const AddBook = ({ appendBook, appendAuthor, appendImage }) => {
         placeholder="Image"
         value={image}
         onChange={handleImageChange}
+      />
+      <input
+        name="date"
+        type="datetime-local"
+        required
+        placeholder="Date"
+        value={date}
+        onChange={handleDateChange}
+      />
+       <input
+        name="description"
+        type="text"
+        required
+        placeholder="Description"
+        value={description}
+        onChange={handleDescriptionChange}
+      />
+       <input
+        name="rating"
+        type="text"
+        required
+        placeholder="Rating"
+        value={rating}
+        onChange={handleRatingChange}
       />
       {titleErrors.map((error) => (
         <p className="error" key={error}>

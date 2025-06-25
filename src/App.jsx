@@ -8,6 +8,8 @@ const App = () => {
   const [books, setBooks] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [images, setImages] = useState([]);
+  const [dates, setDates] = useState([]);
+  const [descriptions, setDescriptions] = useState([]);
   const appendBook = (newBook) => {
     console.log("newBook", newBook);
     setBooks([...books, newBook]);
@@ -20,10 +22,18 @@ const App = () => {
     console.log("newImage", newImage);
     setImages([...images, newImage]);
   }
+  const appendDate = (newDate) => {
+    console.log("newDate", newDate);
+    setDates([...dates, newDate]);
+  }
+  const appendDescription = (newDescription) => {
+    console.log("newDescription", newDescription);
+    setDescriptions([...descriptions, newDescription]);
+  }
   return (
     <div className="app">
       <h1 className="title">React Forms! 📝</h1>
-      <AddBook appendBook={appendBook} appendAuthor={appendAuthor} appendImage={appendImage}/>
+      <AddBook appendBook={appendBook} appendAuthor={appendAuthor} appendImage={appendImage} appendDate={appendDate} appendDescription={appendDescription}/>
       {books.map((book) => (
         <li key={book}>{book}</li>
       ))}
