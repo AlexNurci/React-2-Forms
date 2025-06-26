@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaStar } from "react-icons/fa";  
 import "./style.css";
 
 /**
@@ -14,13 +15,16 @@ import "./style.css";
  * - isFavorite (boolean, default false)
  */
 
-const AddBook = ({ appendBook, appendAuthor, appendImage, appendDate, appendDescription}) => {
+const AddBook = ({ appendBook, appendAuthor, appendImage, appendDate, appendDescription, appendRating, appendRead, appendFavorite}) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [image, setImage] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
-  const [rating, setRating] = useState("");
+  const [rating, setRating] = useState(null);
+  const [hover, setHover] = useState(null);
+  const [Read, setRead] = useState(false);
+  const [Favorite, setFavorite] = useState(false);
   const [titleErrors, setTitleErrors] = useState([]);
   const [dirty, setDirty] = useState(false);
 
@@ -32,6 +36,8 @@ const AddBook = ({ appendBook, appendAuthor, appendImage, appendDate, appendDesc
     appendDate(date);
     appendDescription(description);
     appendRating(rating);
+    appendRead(Read);
+    appendFavorite(Favorite);
     clearForm();
   };
 
@@ -66,6 +72,14 @@ const AddBook = ({ appendBook, appendAuthor, appendImage, appendDate, appendDesc
     setDirty(true);
     setRating(event.target.value);
   }
+  const handleReadChange = (event) => {
+    setDirty(true);
+    setRead(event.target.value);
+  }
+  const handleFavoriteChange = (event) => {
+    setDirty(true);
+    setFavorite(event.target.value);
+  }
 
   const clearForm = () => {
     setTitle("");
@@ -74,6 +88,8 @@ const AddBook = ({ appendBook, appendAuthor, appendImage, appendDate, appendDesc
     setDate("");
     setDescription("");
     setRating("");
+    setRead("");
+    setFavorite("");
   };
 
   return (
@@ -118,14 +134,48 @@ const AddBook = ({ appendBook, appendAuthor, appendImage, appendDate, appendDesc
         value={description}
         onChange={handleDescriptionChange}
       />
-       <input
-        name="rating"
-        type="text"
-        required
-        placeholder="Rating"
-        value={rating}
-        onChange={handleRatingChange}
-      />
+      {[...Array(5)].map((star, index) => {
+        const currentRating = index + 1;
+        return(
+          <label>
+            <input
+              name="rating"
+              type="radio"
+              required
+              value={currentRating}
+              onClick={() => setRating(currentRating)}
+              onChnage={handleRatingChange}
+            />
+            <FaStar 
+              className='star' 
+              size={15} 
+              color={currentRating <= (hover || rating) ? "#ffc107" : "#e4e5e9"} 
+              onMouseEnter={() => setHover(currentRating)}
+              onMouseLeave={() => setHover(null)}
+            />
+          </label>
+        )
+      })}
+      <label>
+        Have you read it?
+        <input
+        name="Read"
+        type="checkbox"
+        placeholder="isRead"
+        checked={Read}
+        onChange={handleReadChange}
+        />
+      </label>
+      <label>
+        Is it your favorite?
+        <input
+        name="Favorite"
+        type="checkbox"
+        placeholder="isFavorite"
+        checked={Favorite}
+        onChange={handleFavoriteChange}
+        />
+      </label>
       {titleErrors.map((error) => (
         <p className="error" key={error}>
           {error}
